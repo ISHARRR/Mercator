@@ -6,7 +6,19 @@ object ShoppingCart {
     val appleCount = items.count(_.toLowerCase == "apple")
     val orangeCount = items.count(_.toLowerCase == "orange")
 
-    val totalCost = (appleCount * applePrice) + (orangeCount * orangePrice)
-    BigDecimal(totalCost).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble
+    val appleCost = calculateAppleCost(appleCount)
+    val orangeCost = calculateOrangeCost(orangeCount)
+
+    BigDecimal(appleCost + orangeCost).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble
+  }
+
+  private def calculateAppleCost(appleCount: Int): Double = {
+    val applesToPay = (appleCount + 1) / 2 // Buy one, get one free
+    applesToPay * applePrice
+  }
+
+  private def calculateOrangeCost(orangeCount: Int): Double = {
+    val orangesToPay = (2 * (orangeCount / 3)) + (orangeCount % 3)
+    orangesToPay * orangePrice
   }
 }
